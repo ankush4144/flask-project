@@ -12,6 +12,10 @@ post_user_credentials = api.model('User', {
      'firstname': fields.String(required=True,description='first name of the user.'),
      'lastname': fields.String(required=True,description='last name of the user.')
     })
+check_login = api.model('UserLogin', {
+    'username': fields.String(required=True,description='Username'),
+    'password': fields.String(required=True, min_length=5, description='Password for the username')
+    })
 
 
 @api.route('/users')
@@ -32,7 +36,20 @@ class register_users(Resource):
             print(request.json)
             return "Successfully registered user : {}".format(username)
         except Exception as e:
-            return "Failed to register user : {} due to following error: \n{}".format(username, e)
+            return "Failed to register user '{}' cause username already exists.".format(firstname)
+
+
+@api.route('/login')
+class login(Resource):
+    @api.expect(check_login)
+    def post(self):
+        username = request.json['username']
+        password = request.json['password']
+        if db_obj.verify_login(username, password):
+            return "LOGIN SUCCESSFUL."
+        else:
+            return "USERNAME OR PASSWORD NOT CORRECT."
+
 
 @api.route('/users/<string:username>')
 class fetch_user_details(Resource):
