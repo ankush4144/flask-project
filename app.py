@@ -19,13 +19,12 @@ check_login = api.model('UserLogin', {
 
 
 @api.route('/users')
-class register_users(Resource):
+class RegisterUsers(Resource):
     def get(self):
         return db_obj.fetch_all_users()
-    
+
     @api.expect(post_user_credentials)
     def post(self):
-        #return request.json
         username = request.json['username']
         user_password = request.json['password']
         firstname = request.json['firstname']
@@ -40,7 +39,7 @@ class register_users(Resource):
 
 
 @api.route('/login')
-class login(Resource):
+class Login(Resource):
     @api.expect(check_login)
     def post(self):
         username = request.json['username']
@@ -52,7 +51,7 @@ class login(Resource):
 
 
 @api.route('/users/<string:username>')
-class fetch_user_details(Resource):
+class FetchUserDetails(Resource):
     def get(self, username):
         return db_obj.fetch_user_details(username)
 

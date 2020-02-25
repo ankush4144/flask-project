@@ -3,7 +3,7 @@ from src.lib import constants
 from src.lib import password_encryptor as encrypt
 
 
-class Database():
+class Database:
     def __init__(self):
         self.connection = Connection(constants.DB_HOST, constants.DB_NAME, constants.DB_USER, constants.DB_PASSWORD)
 
