@@ -25,8 +25,9 @@ class Connection:
     def execute_fetch_query(self, query):
         if self.connection.is_connected():
             try:
-                cursor = self.connection.cursor()
+                cursor = self.connection.cursor(buffered=True)
                 cursor.execute(query)
+                self.connection.commit()
                 result = cursor.fetchall()
                 cursor.close()
                 return result
@@ -38,8 +39,9 @@ class Connection:
     def execute_insert_query(self, query):
         if self.connection.is_connected():
             try:
-                cursor = self.connection.cursor()
+                cursor = self.connection.cursor(buffered=True)
                 cursor.execute(query)
+                self.connection.commit()
                 cursor.close()
             except Exception as e:
                 raise Exception("Failed to execute insert query - '{}', due to following error : \n{}".format(query, e))

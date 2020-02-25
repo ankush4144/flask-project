@@ -23,8 +23,10 @@ class Database:
 
     def fetch_user_details(self, username):
         query = "select firstname,lastname from users_information where username='{}'".format(username)
-        result = self.connection.execute_fetch_query(query)[0]
+      
+        result = self.connection.execute_fetch_query(query)
         if result:
+            result = result[0]
             return {'firstname': result[0], 'lastname': result[1]}
         else:
             return "User {} not registered.".format(username)
